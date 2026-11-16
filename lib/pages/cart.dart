@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+
 import '../utils/format.dart';
 import '../models/cart_item.dart';
 import '../models/product.dart';
@@ -13,8 +14,10 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   // data dummy keranjang
   final List<CartItem> _items = [
-    CartItem(product: dummyProducts[0], quantity: 1),
-    CartItem(product: dummyProducts[2], quantity: 2),
+    CartItem(product: dummyProducts[0], quantity: 0),
+    CartItem(product: dummyProducts[1], quantity: 0),
+    CartItem(product: dummyProducts[2], quantity: 0),
+    CartItem(product: dummyProducts[3], quantity: 0),
   ];
 
   int get _jumlahPesanan {
@@ -36,9 +39,28 @@ class _CartPageState extends State<CartPage> {
   int get _pajak => (_subtotal * 0.11).round();
   int get _diskon => 0;
   int get _estimasiTagihan => _subtotal + _pajak - _diskon;
+  final TextEditingController _searchController = TextEditingController();
+  String _kataKunci = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  List<CartItem> get _itemTampil {
+    return _items
+        .where(
+          (item) => item.product.productName.toLowerCase().contains(
+            _kataKunci.toLowerCase(),
+          ),
+        )
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final tampil = _itemTampil;
     return Scaffold(
       appBar: AppBar(title: const Text('Daftar Pesanan')),
       body: _items.isEmpty
@@ -54,71 +76,102 @@ class _CartPageState extends State<CartPage> {
             )
           : Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: const InputDecoration(
+                      labelText: 'Cari pesanan',
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _kataKunci = value;
+                      });
+                    },
+                  ),
+                ),
                 Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(12.0),
-                    itemCount: _items.length,
-                    itemBuilder: (context, index) {
-                      final item = _items[index];
-                      return Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              // 1. gambar kecil
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.asset(
-                                  item.product.productImage,
-                                  width: 64,
-                                  height: 64,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              // 2. nama dan harga (mengisi sisa lebar)
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                  child:
+                      tampil
+                          .isEmpty // ① ternary baru
+                      ? const Center(child: Text('Pesanan tidak ditemukan'))
+                      : ListView.builder(
+                          padding: const EdgeInsets.all(12.0),
+                          itemCount: tampil.length,
+                          itemBuilder: (context, index) {
+                            final item = tampil[index];
+                            return Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
                                   children: [
-                                    Text(
-                                      item.product.productName,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                    // 1. gambar kecil
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.asset(
+                                        item.product.productImage,
+                                        width: 64,
+                                        height: 64,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                    Text(formatRupiah(item.product.productPrice)),
+                                    const SizedBox(width: 12),
+                                    // 2. nama dan harga (mengisi sisa lebar)
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            item.product.productName,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            formatRupiah(
+                                              item.product.productPrice,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // 3. kontrol kuantitas
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          if (item.quantity > 0) {
+                                            item.quantity--;
+                                          } else {
+                                            _items.remove(item);
+                                          }
+                                        });
+                                      },
+                                      icon: const Icon(
+                                        Icons.remove_circle_outline,
+                                      ),
+                                    ),
+                                    Text('${item.quantity}'),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          item.quantity++;
+                                        });
+                                      },
+                                      icon: const Icon(
+                                        Icons.add_circle_outline,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
-                              // 3. kontrol kuantitas
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if (item.quantity > 1) {
-                                      item.quantity--;
-                                    } else {
-                                      _items.removeAt(index);
-                                    }
-                                  });
-                                },
-                                icon: const Icon(Icons.remove_circle_outline),
-                              ),
-                              Text('${item.quantity}'),
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    item.quantity++;
-                                  });
-                                },
-                                icon: const Icon(Icons.add_circle_outline),
-                              ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
                 Container(
                   width: double.infinity,
@@ -146,7 +199,16 @@ class _CartPageState extends State<CartPage> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: const Text('Lanjutkan'),
+                          child: const Text('Lanjut ke Pembayaran'),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: const BorderSide(
+                                color: Colors.grey,
+                                width: 1,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
