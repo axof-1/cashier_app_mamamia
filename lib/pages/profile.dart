@@ -1,5 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
+import 'catalog.dart';
+
 // 1. Data satu menu: judul, ikon, dan warna
 class MenuKasir {
   final String judul;
@@ -11,7 +13,7 @@ class MenuKasir {
 
 // 2. Daftar menu (dummy)
 const List<MenuKasir> daftarMenu = [
-  MenuKasir('Kasir', Icons.point_of_sale, Colors.green),
+  MenuKasir('Kasir Pemesanan', Icons.point_of_sale, Colors.green),
   MenuKasir('Produk', Icons.inventory_2, Colors.orange),
   MenuKasir('Stok', Icons.inventory, Colors.brown),
   MenuKasir('Pelanggan', Icons.people, Colors.blue),
@@ -110,10 +112,19 @@ class _MenuTile extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Menu ${menu.judul} belum tersedia (dummy)')),
-          );
+          if (menu.judul == 'Kasir Pemesanan') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CatalogPage()),
+            );
+          } else {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Menu ${menu.judul} belum tersedia (dummy)'),
+              ),
+            );
+          }
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

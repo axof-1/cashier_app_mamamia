@@ -68,7 +68,7 @@ class _CatalogPageState extends State<CatalogPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Kasir')),
+      appBar: AppBar(title: const Text('Kasir (Katalog Pemesanan)')),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: LayoutBuilder(
