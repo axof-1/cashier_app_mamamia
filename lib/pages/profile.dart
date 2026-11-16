@@ -13,7 +13,7 @@ class MenuKasir {
 
 // 2. Daftar menu (dummy)
 const List<MenuKasir> daftarMenu = [
-  MenuKasir('Kasir Pemesanan', Icons.point_of_sale, Colors.green),
+  MenuKasir('Kasir (Katalog Pemesanan)', Icons.point_of_sale, Colors.green),
   MenuKasir('Produk', Icons.inventory_2, Colors.orange),
   MenuKasir('Stok', Icons.inventory, Colors.brown),
   MenuKasir('Pelanggan', Icons.people, Colors.blue),
@@ -112,7 +112,7 @@ class _MenuTile extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          if (menu.judul == 'Kasir Pemesanan') {
+          if (menu.judul == 'Kasir (Katalog Pemesanan)') {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const CatalogPage()),
@@ -131,9 +131,13 @@ class _MenuTile extends StatelessWidget {
           children: [
             Icon(menu.ikon, size: 36, color: menu.warna.shade700),
             const SizedBox(height: 8),
-            Text(
-              menu.judul,
-              style: const TextStyle(fontWeight: FontWeight.w600),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                menu.judul,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
             ),
           ],
         ),

@@ -43,7 +43,7 @@ class ProductCard extends StatelessWidget {
                   product.productName,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                // 3. Row: harga di kiri, tombol + di kanan (spaceBetween)
+                // 3. Row: harga, tombol −, jumlah, tombol +.
                 Row(
                   children: [
                     Expanded(child: Text(formatRupiah(product.productPrice))),
@@ -190,7 +190,7 @@ class _CatalogPageState extends State<CatalogPage> {
                 },
               ),
             ),
-          ], //
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

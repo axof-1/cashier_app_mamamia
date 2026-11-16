@@ -91,18 +91,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         );
                         await Future.delayed(const Duration(seconds: 2));
-                        if (!mounted) return;
+                        if (!context.mounted) return;
                         Navigator.pop(context); // Kembali ke halaman login
-                        // Lakukan proses pendaftaran di sini
                       }
                     },
-                    child: const Text('Daftar'),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                         side: const BorderSide(color: Colors.grey, width: 1),
                       ),
                     ),
+                    child: const Text('Daftar'),
                   ),
                 ),
               ],

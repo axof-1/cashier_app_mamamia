@@ -101,13 +101,13 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       }
                     },
-                    child: const Text('Masuk'),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                         side: const BorderSide(color: Colors.grey, width: 1),
                       ),
                     ),
+                    child: const Text('Masuk'),
                   ),
                 ),
                 const SizedBox(height: 12),

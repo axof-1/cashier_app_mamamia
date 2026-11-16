@@ -199,7 +199,6 @@ class _CartPageState extends State<CartPage> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {},
-                          child: const Text('Lanjut ke Pembayaran'),
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -209,6 +208,7 @@ class _CartPageState extends State<CartPage> {
                               ),
                             ),
                           ),
+                          child: const Text('Lanjut ke Pembayaran'),
                         ),
                       ),
                     ],

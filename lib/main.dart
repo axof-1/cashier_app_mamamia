@@ -1,6 +1,5 @@
 import 'package:material_ui/material_ui.dart';
 import 'pages/login.dart';
-import 'pages/catalog.dart';
 
 void main() {
   runApp(const MainApp());
