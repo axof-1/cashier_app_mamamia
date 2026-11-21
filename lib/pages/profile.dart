@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-
+import 'login.dart';
 import 'catalog.dart';
 
 // 1. Data satu menu: judul, ikon, dan warna
@@ -82,7 +82,13 @@ class ProfilePage extends StatelessWidget {
                   ),
                   onPressed: () {
                     // Lakukan proses logout di sini
-                    Navigator.pop(context); // Kembali ke halaman login
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                      (route) => false,
+                    ); // Kembali ke halaman login
                   },
                   child: const Text('Logout'),
                 ),

@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -87,12 +88,20 @@ class _RegisterPageState extends State<RegisterPage> {
                       if (_formKey.currentState!.validate()) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Proses pendaftaran berhasil (2 detik menuju ke halaman login)'),
+                            content: Text(
+                              'Proses pendaftaran berhasil (2 detik menuju ke halaman login)',
+                            ),
                           ),
                         );
                         await Future.delayed(const Duration(seconds: 2));
                         if (!context.mounted) return;
-                        Navigator.pop(context); // Kembali ke halaman login
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                          (route) => false,
+                        ); // Kembali ke halaman login
                       }
                     },
                     style: ElevatedButton.styleFrom(

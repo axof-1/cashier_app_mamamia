@@ -92,12 +92,13 @@ class _LoginPageState extends State<LoginPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
                                 ProfilePage(email: emailController.text),
                           ),
+                          (route) => false,
                         );
                       }
                     },
@@ -113,11 +114,12 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 12),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const RegisterPage(),
                       ),
+                      (route) => true,
                     );
                   },
                   child: const Text('Belum punya akun? Daftar disini'),
